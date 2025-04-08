@@ -2,11 +2,11 @@ import pygame
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from alien_invasion import AlienInvansion
+    from alien_invasion import AlienInvasion
 
 class Ship:
 
-    def __init__(self, game: 'AlienInvansion') -> None:
+    def __init__(self, game: 'AlienInvasion') -> None:
         self.game = game
         self.settings = game.settings
         self.screen = game.screen

@@ -3,7 +3,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 
-class AlienInvansion:
+class AlienInvasion:
     def __init__(self)-> None:
         pygame.init()
         self.settings = Settings()
@@ -24,22 +24,28 @@ class AlienInvansion:
 
     def run_game(self)-> None:
         while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-                    pygame.quit()
-                    sys.exit()
+            self._check_events()
 
-            self.screen.blit(self.bg, (0,0))
-            self.ship.draw()
-            pygame.display.flip()
+            self._update_screen()
             self.clock.tick(self.settings.FPS)
+
+    def _update_screen(self):
+        self.screen.blit(self.bg, (0,0))
+        self.ship.draw()
+        pygame.display.flip()
+
+    def _check_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running= False      
+                pygame.quit()
+                sys.exit()
 
     
 
 if __name__ == '__main__':
 
-    ai = AlienInvansion()
+    ai = AlienInvasion()
     ai.run_game()
     
 
