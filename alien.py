@@ -4,19 +4,16 @@ import pygame
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from alien_invasion import AlienInvasion
-
-
-
+    from alien_fleet import AlienFleet
 
 
 class Alien(Sprite):
-    def __init__(self, game: 'AlienInvasion', x: float, y: float)-> None:
+    def __init__(self, fleet: 'AlienFleet', x: float, y: float)-> None:
         super().__init__()
 
-        self._screen = game.screen
-        self.boundaries = game.screen.get_rect()
-        self.settings = game.settings
+        self._screen = fleet.game.screen
+        self.boundaries = fleet.game.screen.get_rect()
+        self.settings = fleet.game.settings
 
 
 
