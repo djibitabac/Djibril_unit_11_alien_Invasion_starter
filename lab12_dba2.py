@@ -1,4 +1,4 @@
-# Lab12_djba2.py
+# Lab12_dba2.py
 # Author: Djibril Ba
 # Description: Combined Alien Invasion game with customized spaceship sprite.
 # Date: April 8, 2025
