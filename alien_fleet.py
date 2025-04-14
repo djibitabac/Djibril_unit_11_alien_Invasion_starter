@@ -1,3 +1,4 @@
+import random
 import pygame
 from alien import Alien
 from typing import TYPE_CHECKING
@@ -29,17 +30,39 @@ class AlienFleet:
 
         fleet_w, fleet_h, x_offset, y_offset = self.calculate_offsets(alien_w, alien_h, screen_w, screen_h)
 
-        self._create_rectangle_fleet(alien_w, alien_h, fleet_w, fleet_h, x_offset, y_offset)
+    
+        self._create_random_formation(alien_w, alien_h, fleet_w, fleet_h, x_offset, y_offset)
 
-
-    def _create_rectangle_fleet(self, alien_w, alien_h, fleet_w, fleet_h, x_offset, y_offset):
+    def _create_cross_formation(self, alien_w, alien_h, fleet_w, fleet_h, x_offset, y_offset):
+        """
+        Builds a cross shape in the alien fleet.
+        Basically puts aliens in the middle row and column
+        
+        """
+        mid_col = fleet_w // 2
+        mid_row = fleet_h // 2
         for row in range(fleet_h):
             for col in range(fleet_w):
-                current_x = alien_w * col + x_offset
-                current_y = alien_h * row + y_offset
-                if col % 2 ==0 or row %2 == 0:
-                    continue
-                self._create_alien(current_x, current_y)
+            # only ad aliens if we're on the center row or column
+                if row == mid_row or col == mid_col:
+                    current_x = alien_w * col + x_offset
+                    current_y = alien_h * row + y_offset
+                    self._create_alien(current_x, current_y)
+
+
+    def _create_random_formation(self, alien_w, alien_h, fleet_w, fleet_h, x_offset, y_offset):
+        """
+        Makes a messy/random alien fleet
+        Only adds an alien like 20% of the time per spot
+        """
+        for row in range(fleet_h):
+            for col in range(fleet_w):
+            # randomly decide if this spot should get an alien
+                if random.random() < 0.1:  # around 1 in 5 chance
+                    current_x = alien_w * col + x_offset
+                    current_y = alien_h * row + y_offset
+                    self._create_alien(current_x, current_y)
+
 
     def calculate_offsets(self, alien_w, alien_h, screen_w, screen_h):
         fleet_w, fleet_h = self.calculate_fleet_size(alien_w, screen_w, alien_h, screen_h)
