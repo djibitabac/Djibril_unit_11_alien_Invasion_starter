@@ -14,6 +14,7 @@ class AlienInvasion:
     def __init__(self)-> None:
         pygame.init()
         self.settings = Settings()
+        self.settings.initialize_dynamic_Settings()
         self.game_stats = GameStats(self.settings.starting_ship_count)
 
         self.screen = pygame.display.set_mode((self.settings.screen_w, self.settings.screen_h))
@@ -82,7 +83,9 @@ class AlienInvasion:
 
 
         if self.alien_fleet.check_destroyed_status():
-            self._check_game_status()
+            self._reset_level()
+            self.settings.increase_difficulty()
+            # self._check_game_status()
 
         
     def _check_game_status(self)-> None:
@@ -108,6 +111,8 @@ class AlienInvasion:
         self.alien_fleet.create_fleet()
 
     def restart_game(self)->None:
+        self.settings.initialize_dynamic_Settings()
+
         self._reset_level()
         self.ship._center_ship()
         self.game_active = True
@@ -121,6 +126,7 @@ class AlienInvasion:
         self.screen.blit(self.bg, (0,0))
         self.ship.draw()
         self.alien_fleet.draw()
+        
 
 
         if not self.game_active:
@@ -136,7 +142,7 @@ class AlienInvasion:
                 self.running= False      
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
+            elif event.type == pygame.KEYDOWN and self.game_active == True:
                 self._check_keydown_events(event)
 
             elif event.type == pygame.KEYUP:
