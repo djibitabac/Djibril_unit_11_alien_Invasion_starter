@@ -12,6 +12,8 @@ class Settings:
         self.bg_file = Path.cwd() / 'Assets' / 'images' / 'space.png'
         self.ship_file = Path.cwd() / 'Assets' / 'images' / 'newspaceship.jpg'
         self.difficulty_scale = 1.1
+        self.scores_file = Path.cwd() / 'Assets' /'file' / 'scores.json'
+
 
         
 
