@@ -8,6 +8,7 @@ from arsenal import Arsenal
 from alien_fleet import AlienFleet
 from time import sleep
 from button import Button
+from hud import HUD
 
 
 class AlienInvasion: 
@@ -24,12 +25,13 @@ class AlienInvasion:
 
         self.bg = pygame.transform.scale(self.bg, 
             (self.settings.screen_w, self.settings.screen_h)
-            )                              
-           
+            )
+        self.game_stats = GameStats(self)                              
+        self.HUD = HUD(self)   
         self.running  = True
         self.clock = pygame.time.Clock()
 
-        pygame.mixer.init()
+        pygame.mixer.init() 
         self.laser_sound = pygame.mixer.Sound(self.settings.laser_sound)
         self.laser_sound. set_volume(0.7)
 
@@ -80,6 +82,8 @@ class AlienInvasion:
             self.impact_sound.play()
             self.impact_sound.fadeout(500)
             self.game_stats.update(collisions)
+            self.HUD.update_scores()
+
 
 
 
@@ -116,6 +120,7 @@ class AlienInvasion:
         self.settings.initialize_dynamic_Settings()
 
         self.game_stats.reset_stats()
+        self.HUD.update_scores()
 
         self._reset_level()
         self.ship._center_ship()
@@ -130,6 +135,8 @@ class AlienInvasion:
         self.screen.blit(self.bg, (0,0))
         self.ship.draw()
         self.alien_fleet.draw()
+        self.HUD.draw()
+
         
 
 
@@ -143,7 +150,8 @@ class AlienInvasion:
     def _check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running= False      
+                self.running= False 
+                self.game_stats.save_scores()     
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN and self.game_active == True:
@@ -180,6 +188,7 @@ class AlienInvasion:
 
         elif event.key == pygame.K_q:
             self.running= False      
+            self.game_stats.save_scores()
             pygame.quit()
             sys.exit()
            
@@ -187,7 +196,7 @@ class AlienInvasion:
 
 
 
-
+ 
     
 
 if __name__ == '__main__':
