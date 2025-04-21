@@ -13,6 +13,8 @@ from hud import HUD
 
 class AlienInvasion: 
     def __init__(self)-> None:
+        
+
         pygame.init()
         self.settings = Settings()
         self.settings.initialize_dynamic_Settings()
@@ -47,6 +49,9 @@ class AlienInvasion:
 
         self.play_button = Button(self, 'Play')
         self.game_active = False
+        self.difficulty_threshold = 50
+        self.settings.initialize_dynamic_Settings()
+
 
 
 
@@ -83,6 +88,7 @@ class AlienInvasion:
             self.impact_sound.fadeout(500)
             self.game_stats.update(collisions)
             self.HUD.update_scores()
+            # self._check_difficulty_increase()
 
 
 
@@ -92,6 +98,7 @@ class AlienInvasion:
             self.settings.increase_difficulty()
             self.game_stats.update_level()
             # self._check_game_status()
+            self.HUD.update_level()
 
         
     def _check_game_status(self)-> None:
@@ -99,14 +106,14 @@ class AlienInvasion:
             self.game_stats.ships_left -= 1
             self._reset_level()
             sleep(0.5)
-
+ 
         else:
             self.game_active = False
             
 
 
 
-        print(self.game_stats.ships_left)
+        # print(self.game_stats.ships_left)
     
 
         
@@ -118,10 +125,8 @@ class AlienInvasion:
 
     def restart_game(self)->None:
         self.settings.initialize_dynamic_Settings()
-
         self.game_stats.reset_stats()
         self.HUD.update_scores()
-
         self._reset_level()
         self.ship._center_ship()
         self.game_active = True
@@ -136,6 +141,8 @@ class AlienInvasion:
         self.ship.draw()
         self.alien_fleet.draw()
         self.HUD.draw()
+ 
+        
 
         
 
@@ -184,6 +191,8 @@ class AlienInvasion:
             if self.ship.fire():
                 self.laser_sound.play()
                 self.laser_sound.fadeout(250)
+               
+
 
 
         elif event.key == pygame.K_q:
@@ -192,6 +201,13 @@ class AlienInvasion:
             pygame.quit()
             sys.exit()
            
+
+    def _check_difficulty_increase(self):
+     """Increase alien speed when the score passes the threshold."""
+     if self.game_stats.score >= self.difficulty_threshold:
+        self.settings.alien_speed += 0.5
+        self.difficulty_threshold += 50  
+
 
 
 
